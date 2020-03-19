@@ -1,0 +1,34 @@
+GetLuckyNumber:
+  path:       /lucky/number/{max}
+  controller: App\Controller\LuckyController::number
+  methods:    GET
+
+GetChart:
+  path: /chart
+  controller: App\Controller\GetChart::index
+  methods: GET
+
+GetPodcasts:
+  path: /non-music
+  controller: App\Controller\GetPodcasts::index
+  methods: GET
+
+GetArtist:
+  path: /artist/{id}
+  controller: App\Controller\GetArtist::get_artist
+  methods: GET
+
+AddArtist:
+  path: /addartist
+  controller: App\Controller\AddArtist::add
+  methods: POST
+
+CreateUser:
+  path: /register
+  controller: App\Controller\CreateUserController::create_user
+  methods: POST
+
+GetToken:
+  path: /auth
+  controller: App\Controller\GetTokenController::get_token
+  methods: POST
