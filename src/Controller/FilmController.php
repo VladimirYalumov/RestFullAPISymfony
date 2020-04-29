@@ -4,36 +4,99 @@
 namespace App\Controller;
 
 use App\Entity\Artist;
+use App\Entity\Episode;
+use App\Entity\Film;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 
-class GetFilmController extends AbstractController
+class FilmController extends AbstractController
 {
-    public function get_film($id)
+    public function getFilm($id)
     {
-        $encoders = [new XmlEncoder(), new JsonEncoder()];
-        $normalizers = [new ObjectNormalizer()];
+        $encoders = array(new XmlEncoder(), new JsonEncoder());
+        $normalizers = array(new ObjectNormalizer());
+
         $serializer = new Serializer($normalizers, $encoders);
 
-        $artist = $this->getDoctrine()->getRepository(Artist::class)->find($id);
+        $film = $this->getDoctrine()->getRepository(Film::class)->find($id);
 
-        $artist_name = $artist->getName();
-        $playlist = [
-            1 => ['id' => 1, 'artist' => $artist_name, 'name' => 'Пачка сигарет'],
-            2 => ['id' => 2, 'artist' => $artist_name, 'name' => 'Звезда по имени солнце'],
-            3 => ['id' => 3, 'artist' => $artist_name, 'name' => 'Хочу перемен'],
-            4 => ['id' => 4, 'artist' => $artist_name, 'name' => 'Группа крови'],
-            5 => ['id' => 5, 'artist' => $artist_name, 'name' => 'Кукушка'],
+        if($film){
+            $episodes = $this->getDoctrine()->getRepository(Episode::class)->findBy(['film_id' => $id]);
 
-        ];
+            $jsonContent = $serializer->serialize($episodes, 'json');
+            return $response = new JsonResponse([
+                'film' => $film->getName(),
+                '$episode' => $jsonContent
+            ]);
 
-        $result = array('artist' => $artist, 'playlist' => $playlist);
-        $jsonContent = $serializer->serialize($result, 'json');
-        return  JsonResponse::fromJsonString($jsonContent);
+        } else {
+            return $response = new JsonResponse(['message' => 'такого сериала нет']);
+        }
+    }
+
+    public function getEpisode($id){
+        $episode = $this->getDoctrine()->getRepository(Episode::class)->findOneBy(['id' => $id]);
+
+
+        if($episode){
+            return $response = new JsonResponse([
+                'name' => $episode->getName(),
+                'number' => $episode->getNumber()
+            ]);
+
+        } else {
+            return $response = new JsonResponse(['message' => 'такой серии нет нет']);
+        }
+    }
+
+    public function addEpisode(Request $request, $id){
+        $token = $request->headers->get('token');
+        if (!$token){
+            return $response = new JsonResponse(
+                [
+                    'Необходимо авторизироваться'
+                ]);
+        };
+
+        $film = $this->getDoctrine()->getRepository(Film::class)->findOneBy(['id' => $id]);
+
+        if($film){
+            $episode = new Episode();
+
+            $number = $request->request->get('number');
+            $name = $request->request->get('name');
+
+            $episodeCheck = $this->getDoctrine()->getRepository(Episode::class)->findOneBy(['number' => $number]);
+
+            if($episodeCheck){
+                return $response = new JsonResponse(['message' => 'такая серия уже есть']);
+            }
+
+            $em = $this->getDoctrine()->getManager();
+
+            $episode->setName($name);
+            $episode->setNumber($number);
+            $episode->setFilmId($id);
+
+            $em->persist($episode);
+            $em->flush();
+
+            return $response = new JsonResponse(['message' => 'OK']);
+        } else {
+            return $response = new JsonResponse(['message' => 'такого сериала нет']);
+        }
+
+    }
+
+    public function getTop(){
+        $top = $this->getDoctrine()->getRepository(Film::class)->getTop();
+
+        return $response = new JsonResponse(['message' => json_encode($top)]);
     }
 }

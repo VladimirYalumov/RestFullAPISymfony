@@ -22,8 +22,25 @@ final class Version20200319003623 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('CREATE TABLE chart (id INT AUTO_INCREMENT NOT NULL, artist VARCHAR(255) NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
-        $this->addSql('CREATE TABLE artist (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+        $this->addSql('CREATE TABLE films 
+(id INT AUTO_INCREMENT NOT NULL, 
+name VARCHAR(255) NOT NULL, 
+PRIMARY KEY(id)) 
+DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB');
+
+        $this->addSql('CREATE TABLE episodes 
+(id INT AUTO_INCREMENT NOT NULL, 
+name VARCHAR(255) NOT NULL, 
+number real NOT NULL, 
+film_id int NOT NULL, 
+PRIMARY KEY(id))');
+
+        $this->addSql('CREATE TABLE markFilmUser 
+(id INT AUTO_INCREMENT NOT NULL, 
+mark integer(2) NOT NULL,
+film_id int NOT NULL,
+user_id int NOT NULL, 
+PRIMARY KEY(id))');
     }
 
     public function down(Schema $schema) : void
@@ -31,7 +48,7 @@ final class Version20200319003623 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('DROP TABLE chart');
-        $this->addSql('DROP TABLE artist');
+        $this->addSql('DROP TABLE films');
+        $this->addSql('DROP TABLE episodes');
     }
 }

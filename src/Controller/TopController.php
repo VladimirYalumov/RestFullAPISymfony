@@ -12,7 +12,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 
-class GetChart extends AbstractController
+class TopController extends AbstractController
 {
     public function index()
     {

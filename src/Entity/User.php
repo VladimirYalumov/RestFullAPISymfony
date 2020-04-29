@@ -26,6 +26,7 @@ class User
      */
     private $password;
 
+
     public function getId(): ?int
     {
         return $this->id;

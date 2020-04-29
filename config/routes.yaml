@@ -1,4 +1,4 @@
-  GetTop:
+GetTop:
   path: /top
   controller: App\Controller\FilmController::getTop
   methods: GET
@@ -8,10 +8,15 @@ GetFilm:
   controller: App\Controller\FilmController::getFilm
   methods: GET
 
-SetMark:
-  path: /addmark/{id}
-  controller: App\Controller\MarkController::setMark
+GetEpisode:
+  path: /getepisode/{id}
+  controller: App\Controller\FilmController::getEpisode
   methods: GET
+
+SetMark:
+  path: /addmark
+  controller: App\Controller\MarkController::addMark
+  methods: POST
 
 AddEpisode:
   path: /addepisode/{id}
@@ -19,9 +24,9 @@ AddEpisode:
   methods: POST
 
 CreateUser:
-  path: /test
-  controller: App\Controller\CreateUserController::test
-  methods: GET
+  path: /registrate
+  controller: App\Controller\CreateUserController::create_user
+  methods: POST
 
 GetToken:
   path: /auth

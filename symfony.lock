@@ -100,7 +100,7 @@
         "version": "2.7.0"
     },
     "php": {
-        "version": "7.4"
+        "version": "7.3"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -113,6 +113,30 @@
     },
     "psr/log": {
         "version": "1.1.2"
+    },
+    "sensio/framework-extra-bundle": {
+        "version": "5.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "5.2",
+            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
+        },
+        "files": [
+            "./config/packages/sensio_framework_extra.yaml"
+        ]
+    },
+    "symfony/apache-pack": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "410b9325a37ef86f1e47262c61738f6202202bca"
+        },
+        "files": [
+            "./public/.htaccess"
+        ]
     },
     "symfony/cache": {
         "version": "v5.0.5"
@@ -242,6 +266,9 @@
     "symfony/polyfill-php73": {
         "version": "v1.14.0"
     },
+    "symfony/process": {
+        "version": "v5.0.7"
+    },
     "symfony/property-access": {
         "version": "v5.0.5"
     },
@@ -274,10 +301,25 @@
     "symfony/var-exporter": {
         "version": "v5.0.5"
     },
+    "symfony/web-server-bundle": {
+        "version": "3.3",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "3.3",
+            "ref": "dae9b39fd6717970be7601101ce5aa960bf53d9a"
+        }
+    },
     "symfony/yaml": {
         "version": "v5.0.5"
     },
     "webimpress/safe-writer": {
         "version": "2.0.0"
+    },
+    "zendframework/zend-code": {
+        "version": "3.4.1"
+    },
+    "zendframework/zend-eventmanager": {
+        "version": "3.2.1"
     }
 }

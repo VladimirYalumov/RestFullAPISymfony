@@ -5,13 +5,15 @@ namespace App\Controller;
 
 use App\Entity\Artist;
 //use App\Controller\TokenAuthenticatedController;
+use App\Entity\Episode;
+use App\Entity\Film;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class AddMarkController extends AbstractController
+class MarkController extends AbstractController
 {
-    public function add(Request $request)
+    public function addMark(Request $request)
     {
         $token = $request->headers->get('token');
         if (!$token){
@@ -21,25 +23,21 @@ class AddMarkController extends AbstractController
                 ]);
         };
 
-        $name = $request->request->get('name');
+        $user_id = $request->headers->get('id');
 
-        $checkArtist = $this->getDoctrine()->getRepository(Artist::class)->findOneBy(['name' => $request->request->get('name')]);
-        if ($checkArtist){
-            return new JsonResponse(['error' => 'Такой исполнитель уже есть']);
+        $filmId = $request->request->get('film_id');
+        $mark = $request->request->get('mark');
+
+        $film = $this->getDoctrine()->getRepository(Film::class)->findOneBy(['id' => $filmId]);
+
+        if($film){
+            $film_id = $film->getId();
+            $this->getDoctrine()->getRepository(Film::class)->setMark($mark, $film_id, $user_id);
+
+            return $response = new JsonResponse(['message' => 'оценка добавлена']);
+
+        } else {
+            return $response = new JsonResponse(['message' => 'такого сериала нет']);
         }
-
-        $em = $this->getDoctrine()->getManager();
-        $artist = new Artist();
-        $artist->setName($request->request->get('name'));
-        $em->persist($artist);
-        $em->flush();
-
-        return $response = new JsonResponse(
-            [
-                'artist' =>
-                    [
-                        'name' => $request->request->get('name'),
-                    ]
-            ]);
     }
 }
