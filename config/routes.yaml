@@ -1,32 +1,27 @@
-GetLuckyNumber:
-  path:       /lucky/number/{max}
-  controller: App\Controller\LuckyController::number
-  methods:    GET
-
-GetChart:
-  path: /chart
-  controller: App\Controller\GetChart::index
+  GetTop:
+  path: /top
+  controller: App\Controller\FilmController::getTop
   methods: GET
 
-GetPodcasts:
-  path: /non-music
-  controller: App\Controller\GetPodcasts::index
+GetFilm:
+  path: /getfilm/{id}
+  controller: App\Controller\FilmController::getFilm
   methods: GET
 
-GetArtist:
-  path: /artist/{id}
-  controller: App\Controller\GetArtist::get_artist
+SetMark:
+  path: /addmark/{id}
+  controller: App\Controller\MarkController::setMark
   methods: GET
 
-AddArtist:
-  path: /addartist
-  controller: App\Controller\AddArtist::add
+AddEpisode:
+  path: /addepisode/{id}
+  controller: App\Controller\FilmController::addEpisode
   methods: POST
 
 CreateUser:
-  path: /register
-  controller: App\Controller\CreateUserController::create_user
-  methods: POST
+  path: /test
+  controller: App\Controller\CreateUserController::test
+  methods: GET
 
 GetToken:
   path: /auth

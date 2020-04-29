@@ -9,7 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-class AddArtist extends AbstractController
+class AddMarkController extends AbstractController
 {
     public function add(Request $request)
     {
@@ -17,20 +17,20 @@ class AddArtist extends AbstractController
         if (!$token){
             return $response = new JsonResponse(
                 [
-                    'У вас нет прав для этого действия'
+                    'Необходимо авторизироваться'
                 ]);
         };
 
         $name = $request->request->get('name');
 
-        $checkArtist = $this->getDoctrine()->getRepository(Artist::class)->findOneBy(['name' => $name]);
+        $checkArtist = $this->getDoctrine()->getRepository(Artist::class)->findOneBy(['name' => $request->request->get('name')]);
         if ($checkArtist){
             return new JsonResponse(['error' => 'Такой исполнитель уже есть']);
         }
 
         $em = $this->getDoctrine()->getManager();
         $artist = new Artist();
-        $artist->setName($name);
+        $artist->setName($request->request->get('name'));
         $em->persist($artist);
         $em->flush();
 
@@ -38,7 +38,7 @@ class AddArtist extends AbstractController
             [
                 'artist' =>
                     [
-                        'name' => $name,
+                        'name' => $request->request->get('name'),
                     ]
             ]);
     }

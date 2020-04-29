@@ -12,9 +12,9 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
 
-class GetArtist extends AbstractController
+class GetFilmController extends AbstractController
 {
-    public function get_artist($id)
+    public function get_film($id)
     {
         $encoders = [new XmlEncoder(), new JsonEncoder()];
         $normalizers = [new ObjectNormalizer()];
